@@ -2,12 +2,13 @@ var city = "Helsinki";
 var direction = 0;
 
 $(document).ready(function() {
-	getWeather(city);
+	GetCookie();
+	GetWeather(city);
 
 	$('button').click(function() {
 		var newCity = $("#city").val();
         if (newCity && newCity != '') {
-			getWeather(newCity);
+			GetWeather(newCity);
 		}
 	});
 
@@ -19,12 +20,12 @@ $(document).ready(function() {
 	});
 });
 
-function getWeather(name) {
+function GetWeather(name) {
 	$.getJSON(`https://api.openweathermap.org/data/2.5/weather?q=${name}&units=metric&appid=8e205031c8a2f36276597a403a5d0e79`, 
 	function (data) {
 		$("#error").addClass("hidden");
 		console.log(data);
-		var city = data.name;
+		var cityUpper = data.name;
 		var weather = data.weather[0].main;
 		var weather_description = data.weather[0].description;
 		var icon = `http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
@@ -48,7 +49,7 @@ function getWeather(name) {
 		var sunrise = new Date(data.sys.sunrise * 1000);
 		var sunset = new Date(data.sys.sunset * 1000);
 
-		$(".city").text(city);
+		$(".city").text(cityUpper);
 		if (weather) {
 			$(".weather").text(`${weather} (${weather_description})`);
 		}
@@ -87,10 +88,36 @@ function getWeather(name) {
 		});
 		$(".wind_speed").text(wind_speed);
 		$(".wind_direction").text(wind_direction);
+		city = cityUpper;
+		WriteCookie();
+		console.log(document.cookie);
 	}
 	)
 	.fail(function() {
 		$("#error").removeClass("hidden");
 		$("#error").text(`Couldn't find ${name}, try another one.`);
 	});
-}
+};
+
+window.onunload = function () {
+    WriteCookie();
+};
+
+function WriteCookie() {
+    var now = new Date();
+    now.setMonth( now.getMonth() + 1 );
+    var x = JSON.stringify(city);
+    document.cookie = "city=" + x + ";";
+    document.cookie = "expires=" + now.toUTCString() + ";"
+};
+
+function GetCookie() {
+	console.log(document.cookie);
+	var allcookies = document.cookie;
+	if (allcookies) {
+		var cookiearray = allcookies.split(';');
+		var value = cookiearray[0].split('=')[1];
+		cookie = JSON.parse(value);
+		city = cookie;
+	};
+};

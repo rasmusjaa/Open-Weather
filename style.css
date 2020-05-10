@@ -5,6 +5,7 @@ body {
 	background: #000 url("bg.jpg") center;
 	background-size: cover;
 	background-repeat: no-repeat;
+	min-height: 100vh;
 }
 button {
 	background: white;
