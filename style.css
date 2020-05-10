@@ -2,8 +2,9 @@ body {
     background: #000;
     font-family: monospace;
     margin: 0px;
-    background: #202833 url("bg.jpg") center;
+    background: #000 url("bg.jpg") center;
     background-size: cover;
+    background-repeat: no-repeat;
 }
 button {
     background: white;

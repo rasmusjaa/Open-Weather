@@ -35,7 +35,6 @@ function getWeather(name) {
 		var humidity = data.main.humidity;
 		var pressure = data.main.pressure;
 		var temp = Math.round(data.main.temp);
-		console.log(typeof temp);
 		var temp_max = data.main.temp_max;
 		var temp_min = data.main.temp_min;
 
