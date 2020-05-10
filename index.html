@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8"/>
+		<link rel="stylesheet" type="text/css" href="style.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+		<script type="text/javascript" src="script.js"></script>
+		<link href="https://fonts.googleapis.com/css2?family=Dosis:wght@700&display=swap" rel="stylesheet">
+		<title>Current weather in Helsinki</title>
+	</head>
+	<body>
+		<div id="weather-container">
+			<h1>Current weather in<br> <span class="city"></span></h1>
+			<p class="top_0 bottom_0"><span class="weather"></span></p>
+			<img class="icon"></icon>
+
+			<h3 class="temprow top_0 bottom_0"><span class="temp">&#176;</span>&#176;</h3> 
+			<p class="top_0">(But it feels like: <span class="feels_like"></span>&#176;)</p>
+
+			<h4>Temperature variation in the area</h4>
+			<p>From <span class="min"></span>&#176; to <span class="max"></span>&#176;</p>
+
+			<h4>Wind conditions</h4>
+			<p>Wind speed: <span class="wind_speed"></span> m/s
+				<br>Wind direction: <span class="wind_direction"></span>&#176;</p>
+
+			<h4>More details</h4>
+			<p>Humidity: <span class="humidity"></span>%
+			<br>Atmospheric pressure: <span class="pressure"></span> hPa
+			<br>Cloudiness: <span class="cloudiness"></span>%</p>
+
+			<h4>Sunrise and sunset (local time)</h4>
+			<p>Sunrise: <span class="sunrise"></span><br>Sunset: <span class="sunset"></span></p>
+
+			<h4>Check another city</h4>
+			<p><input id="city" type="text" placeholder="City"><button>Show</button></p>
+			<div id="error"></div>
+		</div>
+	</body>
+</html>
