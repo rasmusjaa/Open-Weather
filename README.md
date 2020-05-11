@@ -1,4 +1,7 @@
 # Open-Weather
+
+Demo: https://weather.lense.fi/
+
 Get current weather in Helsinki or another city. 
 
 Uses OpenWeatherMap API (free plan with max 60 calls per minute) to get current weather data for city and display it on a dark mobile-first design. No page loads needed and built without ajax, just jQuery, JS and CSS. 
