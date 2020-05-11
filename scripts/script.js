@@ -81,11 +81,14 @@ function getWeather(location) {
 		}
 		$(".feels_like").text(feels_like);
 
-		if (data.rain && data.rain['1h'] && data.rain['3h']) {
-			rain1h = data.rain['1h'];
-			rain3h = data.rain['3h'];
+		if (data.rain && data.rain['1h']) {
 			$("#rain").removeClass("hidden");
-			$(".rain").text(`Last hour: ${rain1h} mm, last 3 hours: ${rain3h} mm`);
+			rain1h = data.rain['1h'];
+			$(".rain").text(`Last hour: ${rain1h} mm`);
+			if (data.rain['3h']) {
+				rain3h = data.rain['3h'];
+				$(".rain").append(`,<br>last 3 hours: ${rain3h} mm`);
+			}
 		} else {
 			$("#rain").addClass("hidden");
 		}
