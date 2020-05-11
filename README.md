@@ -1,6 +1,6 @@
 # Open-Weather
 
-Demo: https://weather.lense.fi/
+Demo published with Github Pages: https://weather.lense.fi/
 
 Get current weather in Helsinki or another city. 
 
