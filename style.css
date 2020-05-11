@@ -20,6 +20,10 @@ input {
 	border: 1px solid black;
 	font-family: monospace;
 }
+label, #remember {
+	vertical-align: middle;
+    margin: 0px;
+}
 h1, h2, h3, h4 {
 	font-family: 'Dosis', sans-serif;
 }
