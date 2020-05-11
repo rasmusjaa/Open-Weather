@@ -4,7 +4,7 @@ Demo published with Github Pages on https://weather.lense.fi/
 
 Get current weather in Helsinki (default), your location (allow location tracking) or any other city. Checking "Remember me" creates a browser cookie with last location and "Remember me" selection for one month.
 
-Uses OpenWeatherMap API (free plan with max 60 calls per minute) to get current weather data for city and display it on a dark mobile-optimized design. No page loads needed since AJAX function calls are made on button clicks or pressing enter while in input. Built with HTML, CSS, JS and jQuery.
+Uses OpenWeatherMap API (free plan with max 60 calls per minute) to get current weather data for city and display it on a dark mobile-optimized design. No page loads needed since AJAX function calls are made on button clicks or on pressing enter while in input. Built with HTML, CSS, JS and jQuery.
 
 ### Data shown:
 <ul>
