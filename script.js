@@ -1,32 +1,51 @@
-var city = "Helsinki";
-var direction = 0;
+var city = 'q=' + 'Helsinki';
+var last_direction = 0;
 
 $(document).ready(function() {
 	getCookie();
 	getWeather(city);
 
-	$('button').click(function() {
+	$('#find').click(function() {
+		if (navigator.geolocation) {
+			navigator.geolocation.getCurrentPosition(successFunction, errorFunction);
+		} else {
+			$("#error").removeClass("hidden");
+			$("#error").text(`No geolocation available, you have to allow location tracking on your browser for this site.`);
+		}
+		
+		function successFunction(position) {
+			var lat = position.coords.latitude;
+			var lon = position.coords.longitude;
+			getWeather(`lat=${lat}&lon=${lon}`);
+		} function errorFunction() {
+			$("#error").removeClass("hidden");
+			$("#error").text(`No geolocation available, you have to allow location tracking on your browser for this site.`);
+		}
+	});
+
+	$('#show').click(function() {
 		var newCity = $("#city").val();
         if (newCity && newCity != '') {
-			getWeather(newCity);
+			getWeather('q=' + newCity);
 		}
 	});
 
 	$('#city').keyup(function(e){
 		if(e.keyCode == 13)
 		{
-			$('button').click();
+			$('#show').click();
 		}
 	});
 });
 
-function getWeather(name) {
-	$.getJSON(`https://api.openweathermap.org/data/2.5/weather?q=${name}&units=metric&appid=8e205031c8a2f36276597a403a5d0e79`, 
+function getWeather(location) {
+	$.getJSON(`https://api.openweathermap.org/data/2.5/weather?${location}&units=metric&appid=8e205031c8a2f36276597a403a5d0e79`, 
 	function (data) {
 		$("#error").addClass("hidden");
 		console.log(data);
 
-		city = name;
+		city = location;
+
 		var cityUpper = data.name;
 
 		var icon = `http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
@@ -47,8 +66,10 @@ function getWeather(name) {
 		var temp_max = data.main.temp_max;
 		var pressure = data.main.pressure;
 
-		var sunrise = new Date(data.sys.sunrise * 1000);
-		var sunset = new Date(data.sys.sunset * 1000);
+		var date = new Date();
+		var user_diff = date.getTimezoneOffset() * 60;
+		var sunrise = new Date((data.sys.sunrise + data.timezone + user_diff) * 1000);
+		var sunset = new Date((data.sys.sunset + data.timezone + user_diff) * 1000);
 
 		$(".city").text(cityUpper);
 
@@ -69,13 +90,16 @@ function getWeather(name) {
 			$("#rain").addClass("hidden");
 		}
 
-		$('#arrow').animate({  transform: wind_direction }, {
-			step: function(wind_direction,fx) {
+		$({deg: last_direction}).animate({deg: wind_direction}, {
+			duration: 500,
+			easing: 'swing',
+			step: function(now,fx) {
 				$('#arrow').css({
-					'-webkit-transform':'rotate('+wind_direction+'deg)', 
-					'-moz-transform':'rotate('+wind_direction+'deg)',
-					'transform':'rotate('+wind_direction+'deg)'
+					'-webkit-transform':'rotate('+now+'deg)', 
+					'-moz-transform':'rotate('+now+'deg)',
+					'transform':'rotate('+now+'deg)'
 				});
+				last_direction = wind_direction;
 			}
 		});
 		$(".wind_speed").text(wind_speed);
@@ -92,7 +116,7 @@ function getWeather(name) {
 	})
 	.fail(function() {
 		$("#error").removeClass("hidden");
-		$("#error").text(`Couldn't find ${name}, try another one.`);
+		$("#error").text(`Couldn't find ${location.substring(2)}, try another one.`);
 	});
 };
 
@@ -109,23 +133,23 @@ function writeCookie() {
     now.setMonth( now.getMonth() + 1 );
     var x = JSON.stringify(city);
 	document.cookie = `city=${x};`
-	document.cookie = `remember=${$("#remember").is(':checked')};`
+	document.cookie = `remember="${$("#remember").is(':checked')}";`
 	document.cookie = `expires=${now.toUTCString()};`
-	console.log(document.cookie);
 };
 
 function getCookie() {
-	console.log(document.cookie);
 	if (document.cookie) {
 		var cookiearray = document.cookie.split(';');
 		var value;
 		cookiearray.forEach(function (item, index) {
-			value = item.split('=');
-			if (value[0].trim() === "city")
-				city =  JSON.parse(value[1]);
-			else if (value[0].trim() === "remember")
-				$("#remember").prop("checked", JSON.parse(value[1]));
-			
+			value = item.trim();
+			if (value.startsWith("city")) {
+				city = value.substring(6, value.length - 1); // using substring instead of '=' split to handle coordinates
+			}
+			else if (value.startsWith("remember"))
+			{
+				$("#remember").prop("checked", value.substring(10, value.length - 1));
+			}
 		});
 	};
 };
